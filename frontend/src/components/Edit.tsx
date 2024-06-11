@@ -26,21 +26,22 @@ const Edit = ({ selectId, viewNote, setRefresh }: Props) => {
     }
   };
 
-  const patchNote = async () => {
+  const patchNote = async (content: string) => {
     await axios.patch(`/api/notes/${selectId}`, {
-      title: viewContent.split("\n")[0],
-      text: viewContent.split("\n").slice(2).join("\n"),
+      title: content.split("\n")[0],
+      text: content.split("\n").slice(2).join("\n"),
     });
     setRefresh((prev) => !prev);
   };
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const newVal = e.currentTarget.value; // 一回変数に入れないと再レンダリングまでviewContentが変わらずバグる
     setViewContent(e.currentTarget.value);
     if (postTimer) {
       clearTimeout(postTimer);
     }
     setPostTimer(
       setTimeout(async () => {
-        patchNote();
+        patchNote(newVal);
       }, 5000)
     );
   };
@@ -48,7 +49,7 @@ const Edit = ({ selectId, viewNote, setRefresh }: Props) => {
     if (postTimer) {
       clearTimeout(postTimer);
     }
-    patchNote();
+    patchNote(viewContent);
   };
 
   useEffect(() => {
