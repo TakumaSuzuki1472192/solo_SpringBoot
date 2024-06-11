@@ -19,7 +19,14 @@ class NoteRepository(
     @Autowired val jdbcTemplate: JdbcTemplate,
     @Autowired val noteRowMapper: NoteRowMapper
 ) {
-    fun getNotes():List<Note> {
-        return jdbcTemplate.query("SELECT * FROM notes",noteRowMapper)
+    fun getNotes(): List<Note> {
+        return jdbcTemplate.query("SELECT * FROM notes", noteRowMapper)
+    }
+
+    fun getNote(id: Long): List<Note> {
+        return jdbcTemplate.query("SELECT * FROM notes WHERE id = ?", arrayOf(id), noteRowMapper)
+    }
+    fun deleteNote(id: Long): Int {
+        return jdbcTemplate.update("DELETE FROM notes WHERE id = ?", id)
     }
 }
