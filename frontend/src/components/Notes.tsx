@@ -8,7 +8,7 @@ interface Props {
   setSelectId: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-const Notes = ({ list, setSelectId }: Props) => {
+const Notes = ({ list, selectId, setSelectId }: Props) => {
   return (
     <>
       {list.map((note) => {
@@ -19,6 +19,7 @@ const Notes = ({ list, setSelectId }: Props) => {
         const formattedTime = viewTime.toLocaleString();
         return (
           <Card
+            bg={note.id === selectId ? "powderblue" : "white"}
             key={note.id}
             mt={3}
             mb={3}

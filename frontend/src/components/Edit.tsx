@@ -11,6 +11,7 @@ interface Props {
 
 const Edit = ({ selectId, viewNote, setRefresh }: Props) => {
   const [viewContent, setViewContent] = useState<string>("");
+  const [postTimer, setPostTimer] = useState<number | null>(null);
 
   const deleteNote = async () => {
     if (selectId !== null) {
@@ -25,8 +26,29 @@ const Edit = ({ selectId, viewNote, setRefresh }: Props) => {
     }
   };
 
+  const patchNote = async () => {
+    await axios.patch(`/api/notes/${selectId}`, {
+      title: viewContent.split("\n")[0],
+      text: viewContent.split("\n").slice(2).join("\n"),
+    });
+    setRefresh((prev) => !prev);
+  };
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setViewContent(e.currentTarget.value);
+    if (postTimer) {
+      clearTimeout(postTimer);
+    }
+    setPostTimer(
+      setTimeout(async () => {
+        patchNote();
+      }, 5000)
+    );
+  };
+  const handleBlur = () => {
+    if (postTimer) {
+      clearTimeout(postTimer);
+    }
+    patchNote();
   };
 
   useEffect(() => {
@@ -49,6 +71,7 @@ const Edit = ({ selectId, viewNote, setRefresh }: Props) => {
         h={"75vh"}
         placeholder={`タイトルを入力\n\n本文を入力`}
         onChange={handleChange}
+        onBlur={handleBlur}
         value={viewContent}
       ></Textarea>
     </>

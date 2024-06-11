@@ -28,9 +28,11 @@ class NoteRepository(
     }
 
     fun newNote(): Int {
-
-
         return jdbcTemplate.update("INSERT INTO notes(createdAt) VALUES(CURRENT_TIMESTAMP)")
+    }
+
+    fun patchNote(patchNote:ReqNote,id: Long): Int {
+        return jdbcTemplate.update("UPDATE notes SET title=?, text=?, updatedAt=CURRENT_TIMESTAMP WHERE id = ?",patchNote.title,patchNote.text,id)
     }
 
     fun deleteNote(id: Long): Int {
