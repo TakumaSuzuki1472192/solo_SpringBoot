@@ -50,7 +50,7 @@ function App() {
         <Grid.Col span={9} bg={"gray"} style={{ height: "85vh" }}>
           <List list={list} selectId={selectId} setSelectId={setSelectId} />
         </Grid.Col>
-        <Grid.Col span={14} bg={"gray"}>
+        <Grid.Col span={14} bg={"gray"} style={{ height: "85vh" }}>
           <Edit
             selectId={selectId}
             viewNote={viewNote}

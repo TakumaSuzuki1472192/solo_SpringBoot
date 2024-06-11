@@ -1,13 +1,13 @@
-* {
+/* * {
   box-sizing: border-box;
-}
+} */
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  line-height: 1;
   font-weight: 400;
 }
 
 #mantaineTextarea {
-  height: 75vh;
+  height: calc(75vh - 15px);
 }

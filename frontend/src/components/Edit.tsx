@@ -30,7 +30,7 @@ const Edit = ({ selectId, viewNote, setRefresh }: Props) => {
   };
 
   useEffect(() => {
-    if (viewNote) {
+    if (viewNote?.title || viewNote?.text) {
       setViewContent(`${viewNote.title}\n\n${viewNote.text}`);
     } else {
       setViewContent("");
@@ -47,7 +47,7 @@ const Edit = ({ selectId, viewNote, setRefresh }: Props) => {
       <Textarea
         id="mantaineTextarea"
         h={"75vh"}
-        placeholder="Input placeholder"
+        placeholder={`タイトルを入力\n\n本文を入力`}
         onChange={handleChange}
         value={viewContent}
       ></Textarea>

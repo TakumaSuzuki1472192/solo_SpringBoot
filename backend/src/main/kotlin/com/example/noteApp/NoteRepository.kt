@@ -20,12 +20,19 @@ class NoteRepository(
     @Autowired val noteRowMapper: NoteRowMapper
 ) {
     fun getNotes(): List<Note> {
-        return jdbcTemplate.query("SELECT * FROM notes", noteRowMapper)
+        return jdbcTemplate.query("SELECT * FROM notes ORDER BY COALESCE(updatedAt, createdAt) DESC", noteRowMapper)
     }
 
     fun getNote(id: Long): List<Note> {
         return jdbcTemplate.query("SELECT * FROM notes WHERE id = ?", arrayOf(id), noteRowMapper)
     }
+
+    fun newNote(): Int {
+
+
+        return jdbcTemplate.update("INSERT INTO notes(createdAt) VALUES(CURRENT_TIMESTAMP)")
+    }
+
     fun deleteNote(id: Long): Int {
         return jdbcTemplate.update("DELETE FROM notes WHERE id = ?", id)
     }

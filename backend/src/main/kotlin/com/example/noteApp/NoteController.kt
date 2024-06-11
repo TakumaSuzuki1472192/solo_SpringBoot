@@ -3,6 +3,7 @@ package com.example.noteApp
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -17,10 +18,13 @@ class NoteController(val noteRepository: NoteRepository) {
         return noteRepository.getNote(id)
     }
 
+    @PostMapping("/api/notes")
+    fun newNote():Int {
+        return noteRepository.newNote()
+    }
 
     @DeleteMapping("/api/notes/{id}")
     fun deleteNote(@PathVariable("id") id:Long):Int {
-        println("delete")
         return  noteRepository.deleteNote(id)
     }
 }
