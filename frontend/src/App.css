@@ -7,3 +7,25 @@
   height: 100vh;
   overflow: hidden;
 }
+
+.note-item-enter {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.note-item-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 500ms, transform 500ms;
+}
+
+.note-item-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.note-item-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 500ms, transform 500ms;
+}
