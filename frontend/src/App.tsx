@@ -8,7 +8,7 @@ import { Res } from "./components/grobals";
 
 function App() {
   const fetchList = async (): Promise<void> => {
-    const list = await axios("/api/notes").then((res) => res.data);
+    const list: Res[] = await axios("/api/notes").then((res) => res.data);
     setList(list);
     setSelectId(list.length > 0 ? list[0].id : null);
   };
@@ -17,6 +17,7 @@ function App() {
   const [selectId, setSelectId] = useState<number | null>(null);
   const [viewNote, setViewNote] = useState<Res | null>(null);
   const [refresh, setRefresh] = useState<boolean>(false);
+  const [editFlag, setEditFlag] = useState<boolean>(false);
 
   useEffect(() => {
     fetchList();
@@ -48,13 +49,19 @@ function App() {
         overflow="hidden"
       >
         <Grid.Col span={9} bg={"gray"} style={{ height: "85vh" }}>
-          <List list={list} selectId={selectId} setSelectId={setSelectId} />
+          <List
+            list={list}
+            selectId={selectId}
+            setSelectId={setSelectId}
+            editFlag={editFlag}
+          />
         </Grid.Col>
         <Grid.Col span={14} bg={"gray"} style={{ height: "85vh" }}>
           <Edit
             selectId={selectId}
             viewNote={viewNote}
             setRefresh={setRefresh}
+            setEditFlag={setEditFlag}
           />
         </Grid.Col>
       </Grid>

@@ -7,9 +7,10 @@ interface Props {
   selectId: number | null;
   viewNote: Res | null;
   setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
+  setEditFlag: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Edit = ({ selectId, viewNote, setRefresh }: Props) => {
+const Edit = ({ selectId, viewNote, setRefresh, setEditFlag }: Props) => {
   const [viewContent, setViewContent] = useState<string>("");
   const [postTimer, setPostTimer] = useState<number | null>(null);
 
@@ -31,18 +32,20 @@ const Edit = ({ selectId, viewNote, setRefresh }: Props) => {
       title: content.split("\n")[0],
       text: content.split("\n").slice(2).join("\n"),
     });
+    setEditFlag(false);
     setRefresh((prev) => !prev);
   };
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const newVal = e.currentTarget.value; // 一回変数に入れないと再レンダリングまでviewContentが変わらずバグる
     setViewContent(e.currentTarget.value);
+    setEditFlag(true);
     if (postTimer) {
       clearTimeout(postTimer);
     }
     setPostTimer(
-      setTimeout(async () => {
+      setTimeout(() => {
         patchNote(newVal);
-      }, 5000)
+      }, 2000)
     );
   };
   const handleBlur = () => {
@@ -69,7 +72,6 @@ const Edit = ({ selectId, viewNote, setRefresh }: Props) => {
 
       <Textarea
         id="mantaineTextarea"
-        h={"75vh"}
         placeholder={`タイトルを入力\n\n本文を入力`}
         onChange={handleChange}
         onBlur={handleBlur}
