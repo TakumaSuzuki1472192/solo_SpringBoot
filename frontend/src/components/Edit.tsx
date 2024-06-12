@@ -30,7 +30,7 @@ const Edit = ({ selectId, viewNote, setRefresh, setEditFlag }: Props) => {
   const patchNote = async (content: string) => {
     await axios.patch(`/api/notes/${selectId}`, {
       title: content.split("\n")[0],
-      text: content.split("\n").slice(2).join("\n"),
+      text: content.split("\n").slice(1).join("\n"),
     });
     setEditFlag(false);
     setRefresh((prev) => !prev);
@@ -76,6 +76,7 @@ const Edit = ({ selectId, viewNote, setRefresh, setEditFlag }: Props) => {
         onChange={handleChange}
         onBlur={handleBlur}
         value={viewContent}
+        size="lg"
       ></Textarea>
     </>
   );

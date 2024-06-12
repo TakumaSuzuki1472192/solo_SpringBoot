@@ -1,4 +1,5 @@
 import React from "react";
+import { Flipper, Flipped } from "react-flip-toolkit";
 import { Card, Group, Text, Button, Badge } from "@mantine/core";
 import { Res } from "./grobals";
 import dayjs, { extend } from "dayjs";
@@ -42,10 +43,6 @@ const Notes = ({ viewList, selectId, setSelectId, editFlag }: Props) => {
                 <Badge color="blue">saved</Badge>
               )}
             </Group>
-
-            <Text size="sm" c="dimmed">
-              {note.text}
-            </Text>
 
             <Button color="blue" fullWidth mt="md" radius="md">
               update : {time.fromNow()}

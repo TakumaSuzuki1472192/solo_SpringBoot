@@ -32,9 +32,9 @@ const List = ({ list, selectId, setSelectId, editFlag }: Props) => {
 
   return (
     <>
-      <Box style={{ height: "3rem", textAlign: "center" }}>
+      <Box mb={3}>
         <MultiSelect
-          placeholder="Pick value"
+          placeholder="検索ワードを入力"
           data={uniqueTitles}
           nothingFoundMessage="Nothing found..."
           mt={10}
