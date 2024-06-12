@@ -14,47 +14,6 @@ const Edit = ({ selectId, viewNote, setRefresh, setEditFlag }: Props) => {
   const [viewContent, setViewContent] = useState<string>("");
   const [postTimer, setPostTimer] = useState<number | null>(null);
 
-  const deleteNote = async () => {
-    if (selectId !== null) {
-      await axios.delete(`/api/notes/${selectId}`);
-      setRefresh((prev) => !prev);
-    }
-  };
-  const newNote = async () => {
-    if (selectId !== null) {
-      await axios.post(`/api/notes`);
-      setRefresh((prev) => !prev);
-    }
-  };
-
-  const patchNote = async (content: string) => {
-    await axios.patch(`/api/notes/${selectId}`, {
-      title: content.split("\n")[0],
-      text: content.split("\n").slice(1).join("\n"),
-    });
-    setEditFlag(false);
-    setRefresh((prev) => !prev);
-  };
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const newVal = e.currentTarget.value; // 一回変数に入れないと再レンダリングまでviewContentが変わらずバグる
-    setViewContent(e.currentTarget.value);
-    setEditFlag(true);
-    if (postTimer) {
-      clearTimeout(postTimer);
-    }
-    setPostTimer(
-      setTimeout(() => {
-        patchNote(newVal);
-      }, 2000)
-    );
-  };
-  const handleBlur = () => {
-    if (postTimer) {
-      clearTimeout(postTimer);
-    }
-    patchNote(viewContent);
-  };
-
   useEffect(() => {
     if (viewNote?.title || viewNote?.text) {
       setViewContent(`${viewNote.title}\n\n${viewNote.text}`);
@@ -63,21 +22,67 @@ const Edit = ({ selectId, viewNote, setRefresh, setEditFlag }: Props) => {
     }
   }, [viewNote]);
 
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const newContent = e.currentTarget.value;
+    setViewContent(newContent);
+    setEditFlag(true);
+
+    if (postTimer) {
+      clearTimeout(postTimer);
+    }
+
+    setPostTimer(
+      setTimeout(() => {
+        patchNote(newContent); //NOTE:ここでViewContent使うと再レンダリングまで値が変わらずバグる
+      }, 2000)
+    );
+  };
+
+  const handleBlur = () => {
+    if (postTimer) {
+      clearTimeout(postTimer);
+    }
+    patchNote(viewContent);
+  };
+
+  const deleteNote = async () => {
+    if (selectId !== null) {
+      await axios.delete(`/api/notes/${selectId}`);
+      setRefresh((prev) => !prev);
+    }
+  };
+
+  const newNote = async () => {
+    await axios.post(`/api/notes`);
+    setRefresh((prev) => !prev);
+  };
+
+  const patchNote = async (content: string) => {
+    if (selectId !== null) {
+      await axios.patch(`/api/notes/${selectId}`, {
+        title: content.split("\n")[0],
+        text: content.split("\n").slice(2).join("\n"),
+      });
+      setEditFlag(false);
+      setRefresh((prev) => !prev);
+    }
+  };
+
   return (
     <>
       <Box mt={13} style={{ height: "3rem", textAlign: "center" }}>
-        <Button onClick={() => deleteNote()}>Delete</Button>
-        <Button onClick={() => newNote()}>New</Button>
+        <Button onClick={deleteNote}>Delete</Button>
+        <Button onClick={newNote}>New</Button>
       </Box>
 
       <Textarea
-        id="mantaineTextarea"
-        placeholder={`タイトルを入力\n\n本文を入力`}
+        id="mantineTextarea"
+        placeholder="タイトルを入力\n\n本文を入力"
         onChange={handleChange}
         onBlur={handleBlur}
         value={viewContent}
         size="lg"
-      ></Textarea>
+      />
     </>
   );
 };

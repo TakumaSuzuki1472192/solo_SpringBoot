@@ -7,48 +7,56 @@ import { useEffect, useState } from "react";
 import { Res } from "./components/grobals";
 
 function App() {
-  const fetchList = async (): Promise<void> => {
-    const list: Res[] = await axios("/api/notes").then((res) => res.data);
-    setList(list);
-    setSelectId(list.length > 0 ? list[0].id : null);
-  };
-
   const [list, setList] = useState<Res[]>([]);
   const [selectId, setSelectId] = useState<number | null>(null);
   const [viewNote, setViewNote] = useState<Res | null>(null);
   const [refresh, setRefresh] = useState<boolean>(false);
   const [editFlag, setEditFlag] = useState<boolean>(false);
 
+  const fetchList = async () => {
+    try {
+      const response = await axios.get<Res[]>("/api/notes");
+      const notes = response.data;
+      setList(notes);
+      setSelectId(notes.length > 0 ? notes[0].id : null);
+    } catch (error) {
+      console.error("Error fetching list:", error);
+    }
+  };
+
+  const fetchNote = async (id: number) => {
+    try {
+      const response = await axios.get<Res[]>(`/api/notes/${id}`);
+      setViewNote(response.data[0]);
+    } catch (error) {
+      console.error("Error fetching note:", error);
+    }
+  };
+
   useEffect(() => {
     fetchList();
   }, [refresh]);
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      if (selectId !== null) {
-        const note: Res[] = await axios(`/api/notes/${selectId}`).then(
-          (res) => res.data
-        );
-        setViewNote(note[0]);
-      } else {
-        setViewNote(null);
-      }
-    };
-    fetchData();
+    if (selectId !== null) {
+      fetchNote(selectId);
+    } else {
+      setViewNote(null);
+    }
   }, [selectId]);
 
   return (
     <>
-      <Title order={1} mb={"1rem"}>
+      <Title order={1} mb="1rem">
         SPRING Note
       </Title>
       <Grid
         columns={24}
         justify="space-around"
         align="stretch"
-        overflow="hidden"
+        style={{ overflow: "hidden" }}
       >
-        <Grid.Col span={9} bg={"gray"} style={{ height: "85vh" }}>
+        <Grid.Col span={9} style={{ backgroundColor: "gray", height: "85vh" }}>
           <List
             list={list}
             selectId={selectId}
@@ -56,7 +64,7 @@ function App() {
             editFlag={editFlag}
           />
         </Grid.Col>
-        <Grid.Col span={14} bg={"gray"} style={{ height: "85vh" }}>
+        <Grid.Col span={14} style={{ backgroundColor: "gray", height: "85vh" }}>
           <Edit
             selectId={selectId}
             viewNote={viewNote}

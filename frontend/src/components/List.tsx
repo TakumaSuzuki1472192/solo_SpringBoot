@@ -13,13 +13,13 @@ interface Props {
 const List = ({ list, selectId, setSelectId, editFlag }: Props) => {
   const [viewList, setViewList] = useState<Res[]>(list);
   const [uniqueTitles, setUniqueTitles] = useState<string[]>([]);
+
   useEffect(() => {
     setViewList(list);
-    setUniqueTitles(
-      [...new Set(list.map((note) => note.title))].filter(
-        (title): title is string => title !== null && title !== ""
-      )
+    const titles = [...new Set(list.map((note) => note.title))].filter(
+      (title): title is string => title !== null && title !== ""
     );
+    setUniqueTitles(titles);
   }, [list]);
 
   const handleChange = (pickValues: string[]) => {
@@ -41,11 +41,10 @@ const List = ({ list, selectId, setSelectId, editFlag }: Props) => {
           onChange={handleChange}
           clearable
           searchable
-          style={{ zIndex: 10, position: "relative" }}
         />
       </Box>
       <ScrollArea scrollbarSize={2} style={{ height: "75vh" }}>
-        <Flex direction={"column"}>
+        <Flex direction="column">
           <Notes
             list={list}
             viewList={viewList}
