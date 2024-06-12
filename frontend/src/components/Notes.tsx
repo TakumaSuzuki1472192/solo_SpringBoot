@@ -19,37 +19,44 @@ interface Props {
 const Notes = ({ viewList, selectId, setSelectId, editFlag }: Props) => {
   return (
     <>
-      {viewList.map((note) => {
-        const viewTime =
-          note.updatedAt !== null
-            ? new Date(note.updatedAt)
-            : new Date(note.createdAt);
+      <Flipper flipKey={viewList.map((note) => note.id).join(",")}>
+        {viewList.map((note) => {
+          const viewTime =
+            note.updatedAt !== null
+              ? new Date(note.updatedAt)
+              : new Date(note.createdAt);
 
-        const time = dayjs(viewTime);
-        return (
-          <Card
-            bg={note.id === selectId ? "powderblue" : "white"}
-            key={note.id}
-            mt={3}
-            mb={3}
-            onClick={() => setSelectId(note.id)}
-          >
-            <Group justify="space-between" mt="md" mb="xs">
-              <Text fw={500}>{note.title}</Text>
+          const time = dayjs(viewTime);
+          return (
+            <Flipped key={note.id} flipId={note.id}>
+              {(flippedProps) => (
+                <div {...flippedProps}>
+                  <Card
+                    bg={note.id === selectId ? "powderblue" : "white"}
+                    mt={5}
+                    mb={5}
+                    onClick={() => setSelectId(note.id)}
+                  >
+                    <Group justify="space-between" mt="md" mb="xs">
+                      <Text fw={500}>{note.title}</Text>
 
-              {note.id === selectId && editFlag ? (
-                <Badge color="pink">writing</Badge>
-              ) : (
-                <Badge color="blue">saved</Badge>
+                      {note.id === selectId && editFlag ? (
+                        <Badge color="pink">writing</Badge>
+                      ) : (
+                        <Badge color="blue">saved</Badge>
+                      )}
+                    </Group>
+
+                    <Button color="blue" fullWidth mt="md" radius="md">
+                      update : {time.fromNow()}
+                    </Button>
+                  </Card>
+                </div>
               )}
-            </Group>
-
-            <Button color="blue" fullWidth mt="md" radius="md">
-              update : {time.fromNow()}
-            </Button>
-          </Card>
-        );
-      })}
+            </Flipped>
+          );
+        })}
+      </Flipper>
     </>
   );
 };
