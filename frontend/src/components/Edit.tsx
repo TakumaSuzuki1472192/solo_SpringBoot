@@ -68,11 +68,26 @@ const Edit = ({ selectId, viewNote, setRefresh, setEditFlag }: Props) => {
     }
   };
 
+  const summarizeNote = async () => {
+    if (selectId !== null) {
+      await axios
+        .post(`/api/summarizeNotes/${selectId}`, {
+          title: viewContent.split("\n")[0],
+          text: viewContent.split("\n").slice(2).join("\n"),
+        })
+        .then((res) =>
+          setViewContent(`${res.data[0].title}\n\n${res.data[0].text}`)
+        );
+      setEditFlag(false);
+      setRefresh((prev) => !prev);
+    }
+  };
+
   return (
     <>
       <Box mt={13} style={{ height: "3rem", textAlign: "end" }}>
-        <Button color="gray" mr={20}>
-          Api
+        <Button color="gray" mr={20} onClick={summarizeNote}>
+          Api要約
         </Button>
         <Button mr={20} onClick={deleteNote}>
           Delete

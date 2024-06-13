@@ -29,7 +29,7 @@ class NoteController(val noteRepository: NoteRepository,val noteService: NoteSer
     }
 
     @PostMapping("/api/summarizeNotes/{id}")
-    fun summarizeNote(@RequestBody summarizeNote : ReqNote , @PathVariable("id") id:Long): Int {
+    fun summarizeNote(@RequestBody summarizeNote : ReqNote , @PathVariable("id") id:Long): List<Note> {
         val  response = noteService.summarizeNote(summarizeNote,id)
         return noteRepository.summarizeNote(response,summarizeNote.title,id)
     }

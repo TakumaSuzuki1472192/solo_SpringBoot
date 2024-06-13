@@ -36,8 +36,9 @@ class NoteRepository(
 
     }
 
-    fun summarizeNote(summarizedNote:String?,title:String?,id: Long): Int {
-        return jdbcTemplate.update("UPDATE notes SET title=?, text=?, updatedAt=CURRENT_TIMESTAMP WHERE id = ?",title,summarizedNote,id)
+    fun summarizeNote(summarizedNote:String?,title:String?,id: Long): List<Note> {
+        jdbcTemplate.update("UPDATE notes SET title=?, text=?, updatedAt=CURRENT_TIMESTAMP WHERE id = ?",title,summarizedNote,id)
+        return jdbcTemplate.query("SELECT * FROM notes WHERE id = ?", arrayOf(id), noteRowMapper)
     }
 
     fun deleteNote(id: Long): Int {
