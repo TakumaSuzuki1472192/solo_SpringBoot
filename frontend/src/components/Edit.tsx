@@ -71,6 +71,9 @@ const Edit = ({ selectId, viewNote, setRefresh, setEditFlag }: Props) => {
   return (
     <>
       <Box mt={13} style={{ height: "3rem", textAlign: "end" }}>
+        <Button color="gray" mr={20}>
+          Api
+        </Button>
         <Button mr={20} onClick={deleteNote}>
           Delete
         </Button>
