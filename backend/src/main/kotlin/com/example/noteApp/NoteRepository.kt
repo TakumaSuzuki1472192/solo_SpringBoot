@@ -33,6 +33,11 @@ class NoteRepository(
 
     fun patchNote(patchNote:ReqNote,id: Long): Int {
         return jdbcTemplate.update("UPDATE notes SET title=?, text=?, updatedAt=CURRENT_TIMESTAMP WHERE id = ?",patchNote.title,patchNote.text,id)
+
+    }
+
+    fun summarizeNote(summarizedNote:String?,title:String?,id: Long): Int {
+        return jdbcTemplate.update("UPDATE notes SET title=?, text=?, updatedAt=CURRENT_TIMESTAMP WHERE id = ?",title,summarizedNote,id)
     }
 
     fun deleteNote(id: Long): Int {

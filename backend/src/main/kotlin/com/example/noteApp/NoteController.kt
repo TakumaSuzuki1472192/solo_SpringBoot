@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class NoteController(val noteRepository: NoteRepository) {
+class NoteController(val noteRepository: NoteRepository,val noteService: NoteService) {
     @GetMapping("/api/notes")
     fun getNotes(): List<Note> {
         return noteRepository.getNotes()
@@ -26,6 +26,12 @@ class NoteController(val noteRepository: NoteRepository) {
     @ResponseStatus(HttpStatus.CREATED)
     fun newNote():Int {
         return noteRepository.newNote()
+    }
+
+    @PostMapping("/api/summarizeNotes/{id}")
+    fun summarizeNote(@RequestBody summarizeNote : ReqNote , @PathVariable("id") id:Long): Int {
+        val  response = noteService.summarizeNote(summarizeNote,id)
+        return noteRepository.summarizeNote(response,summarizeNote.title,id)
     }
 
     @PatchMapping("/api/notes/{id}")
