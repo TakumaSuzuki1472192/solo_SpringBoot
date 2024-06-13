@@ -35,9 +35,11 @@ const Notes = ({ viewList, selectId, setSelectId, editFlag }: Props) => {
           <div {...flippedProps}>
             <Card
               bg={note.id === selectId ? "powderblue" : "white"}
-              mt={5}
-              mb={5}
+              mt={7}
+              mb={10}
+              shadow="0px 2px 2px gray"
               onClick={() => handleCardClick(note.id)}
+              style={{ cursor: "pointer" }}
             >
               <Group justify="space-between" mt="md" mb="xs">
                 <Text fw={500}>{note.title}</Text>
@@ -47,9 +49,18 @@ const Notes = ({ viewList, selectId, setSelectId, editFlag }: Props) => {
                   {note.id === selectId && editFlag ? "writing" : "saved"}
                 </Badge>
               </Group>
-              <Button color="blue" fullWidth mt="md" radius="md">
-                update : {time.fromNow()}
-              </Button>
+              <Card.Section mt="sm">
+                <Text
+                  c={"white"}
+                  size="sm"
+                  fw={500}
+                  bg={"#228BE6"}
+                  p={"5 20"}
+                  style={{ textAlign: "end" }}
+                >
+                  update : {time.fromNow()}
+                </Text>
+              </Card.Section>
             </Card>
           </div>
         )}

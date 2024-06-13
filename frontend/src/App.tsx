@@ -56,7 +56,10 @@ function App() {
         align="stretch"
         style={{ overflow: "hidden" }}
       >
-        <Grid.Col span={9} style={{ backgroundColor: "gray", height: "85vh" }}>
+        <Grid.Col
+          span={9}
+          style={{ backgroundColor: "silver", height: "85vh" }}
+        >
           <List
             list={list}
             selectId={selectId}
@@ -64,7 +67,10 @@ function App() {
             editFlag={editFlag}
           />
         </Grid.Col>
-        <Grid.Col span={14} style={{ backgroundColor: "gray", height: "85vh" }}>
+        <Grid.Col
+          span={14}
+          style={{ backgroundColor: "silver", height: "85vh" }}
+        >
           <Edit
             selectId={selectId}
             viewNote={viewNote}

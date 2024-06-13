@@ -70,14 +70,18 @@ const Edit = ({ selectId, viewNote, setRefresh, setEditFlag }: Props) => {
 
   return (
     <>
-      <Box mt={13} style={{ height: "3rem", textAlign: "center" }}>
-        <Button onClick={deleteNote}>Delete</Button>
-        <Button onClick={newNote}>New</Button>
+      <Box mt={13} style={{ height: "3rem", textAlign: "end" }}>
+        <Button mr={20} onClick={deleteNote}>
+          Delete
+        </Button>
+        <Button mr={20} onClick={newNote}>
+          New
+        </Button>
       </Box>
 
       <Textarea
         id="mantineTextarea"
-        placeholder="タイトルを入力\n\n本文を入力"
+        placeholder={"タイトルを入力\n\n本文を入力"}
         onChange={handleChange}
         onBlur={handleBlur}
         value={viewContent}
