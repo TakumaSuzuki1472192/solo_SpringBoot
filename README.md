@@ -63,7 +63,14 @@ spring.datasource.driverClassName=org.postgresql.Driver
 spring.datasource.apikey=※取得したAPIキーを貼り付け
 ```
 
-4.サーバーを起動
+4.DB の作成
+
+```bash
+$psql
+createdb solo_notedb
+```
+
+5.サーバーを起動
 
 ```bash
 ./gradlew build
